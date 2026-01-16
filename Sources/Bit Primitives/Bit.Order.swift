@@ -73,9 +73,9 @@ extension Bit.Order {
     }
 }
 
-// MARK: - Enumerable
+// MARK: - Finite.Enumerable
 
-extension Bit.Order: Enumerable {
+extension Bit.Order: Finite.Enumerable {
     /// Number of bit order values.
     @inlinable
     public static var caseCount: Int { 2 }
