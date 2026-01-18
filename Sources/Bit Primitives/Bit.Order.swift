@@ -78,21 +78,24 @@ extension Bit.Order {
 extension Bit.Order: Finite.Enumerable {
     /// Number of bit order values.
     @inlinable
-    public static var caseCount: Int { 2 }
+    public static var count: Int { 2 }
 
-    /// Index of this value (0: msb, 1: lsb).
+    /// Ordinal of this value (0: msb, 1: lsb).
     @inlinable
-    public var caseIndex: Int {
+    public var ordinal: Int {
         switch self {
         case .msb: 0
         case .lsb: 1
         }
     }
 
-    /// Creates a value from its index.
+    /// Creates a value from its ordinal without bounds checking.
+    ///
+    /// - Parameter __unchecked: Marker parameter indicating unchecked access.
+    /// - Parameter ordinal: Must be 0 (msb) or 1 (lsb).
     @inlinable
-    public init(caseIndex: Int) {
-        self = [.msb, .lsb][caseIndex]
+    public init(__unchecked: Void, ordinal: Int) {
+        self = [.msb, .lsb][ordinal]
     }
 }
 

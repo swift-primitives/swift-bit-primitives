@@ -126,20 +126,20 @@ struct `Bit_Order - Basic` {
 @Suite
 struct `Bit_Order - Enumerable` {
     @Test
-    func `caseCount is 2`() {
-        #expect(Bit.Order.caseCount == 2)
+    func `count is 2`() {
+        #expect(Bit.Order.count == 2)
     }
 
     @Test
-    func `caseIndex values`() {
-        #expect(Bit.Order.msb.caseIndex == 0)
-        #expect(Bit.Order.lsb.caseIndex == 1)
+    func `ordinal values`() {
+        #expect(Bit.Order.msb.ordinal == 0)
+        #expect(Bit.Order.lsb.ordinal == 1)
     }
 
     @Test
-    func `init from caseIndex`() {
-        #expect(Bit.Order(caseIndex: 0) == .msb)
-        #expect(Bit.Order(caseIndex: 1) == .lsb)
+    func `init from ordinal`() {
+        #expect(Bit.Order(ordinal: 0) == .msb)
+        #expect(Bit.Order(ordinal: 1) == .lsb)
     }
 
     @Test
