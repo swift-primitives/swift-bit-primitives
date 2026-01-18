@@ -138,8 +138,8 @@ struct `Bit_Order - Enumerable` {
 
     @Test
     func `init from ordinal`() {
-        #expect(Bit.Order(ordinal: 0) == .msb)
-        #expect(Bit.Order(ordinal: 1) == .lsb)
+        #expect(Bit.Order(0) == .msb)
+        #expect(Bit.Order(1) == .lsb)
     }
 
     @Test
