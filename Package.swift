@@ -28,6 +28,10 @@ let package = Package(
                 .product(name: "Algebra Primitives", package: "swift-algebra-primitives"),
                 .product(name: "Identity Primitives", package: "swift-identity-primitives")
             ]
+        ),
+        .testTarget(
+            name: "Bit Primitives Tests",
+            dependencies: ["Bit Primitives"]
         )
     ],
     swiftLanguageModes: [.v6]
