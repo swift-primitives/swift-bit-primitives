@@ -1,8 +1,20 @@
 // Bit Tests.swift
 
+import Foundation
 import Testing
 
 @testable import Bit_Primitives
+
+// MARK: - Bit - Memory Layout
+
+@Suite
+struct `Bit - Memory Layout` {
+    @Test
+    func `memory layout is exactly 1 byte`() {
+        #expect(MemoryLayout<Bit>.size == 1)
+        #expect(MemoryLayout<Bit>.stride == 1)
+    }
+}
 
 // MARK: - Bit - Basic Tests
 
@@ -88,6 +100,117 @@ struct `Bit - CaseIterable` {
         #expect(Bit.allCases.count == 2)
         #expect(Bit.allCases.contains(.zero))
         #expect(Bit.allCases.contains(.one))
+    }
+}
+
+// MARK: - Bit - Initializers
+
+@Suite
+struct `Bit - Initializers` {
+    @Test
+    func `normalizing init coerces nonzero to one`() {
+        #expect(Bit(normalizing: 0) == .zero)
+        #expect(Bit(normalizing: 1) == .one)
+        #expect(Bit(normalizing: 2) == .one)
+        #expect(Bit(normalizing: 255) == .one)
+    }
+
+    @Test
+    func `failable init from UInt8`() {
+        #expect(Bit(UInt8(0)) == .zero)
+        #expect(Bit(UInt8(1)) == .one)
+        #expect(Bit(UInt8(2)) == nil)
+        #expect(Bit(UInt8(255)) == nil)
+    }
+}
+
+// MARK: - Bit - Codable
+
+@Suite
+struct `Bit - Codable` {
+    @Test
+    func `Codable encodes as 0 and 1`() throws {
+        let encoder = JSONEncoder()
+        let zero = try encoder.encode(Bit.zero)
+        let one = try encoder.encode(Bit.one)
+        #expect(String(data: zero, encoding: .utf8) == "0")
+        #expect(String(data: one, encoding: .utf8) == "1")
+    }
+
+    @Test
+    func `Codable decodes from 0 and 1`() throws {
+        let decoder = JSONDecoder()
+        let zero = try decoder.decode(Bit.self, from: Data("0".utf8))
+        let one = try decoder.decode(Bit.self, from: Data("1".utf8))
+        #expect(zero == .zero)
+        #expect(one == .one)
+    }
+}
+
+// MARK: - Bit - Z2 Field Operations
+
+@Suite
+struct `Bit - Z2 Field` {
+    @Test
+    func `identity values`() {
+        #expect(Bit.identity.additive == .zero)
+        #expect(Bit.identity.multiplicative == .one)
+    }
+
+    @Test
+    func `inverse is self`() {
+        #expect(Bit.zero.inverse == .zero)
+        #expect(Bit.one.inverse == .one)
+    }
+
+    @Test
+    func `Z2 field addition is XOR`() {
+        #expect(Bit.zero.adding(.zero) == .zero)
+        #expect(Bit.zero.adding(.one) == .one)
+        #expect(Bit.one.adding(.zero) == .one)
+        #expect(Bit.one.adding(.one) == .zero) // 1+1=0 in Z₂
+    }
+
+    @Test
+    func `Z2 field multiplication is AND`() {
+        #expect(Bit.zero.multiplying(.zero) == .zero)
+        #expect(Bit.zero.multiplying(.one) == .zero)
+        #expect(Bit.one.multiplying(.zero) == .zero)
+        #expect(Bit.one.multiplying(.one) == .one)
+    }
+
+    @Test
+    func `static adding method`() {
+        #expect(Bit.adding(.zero, .zero) == .zero)
+        #expect(Bit.adding(.one, .one) == .zero)
+    }
+
+    @Test
+    func `static multiplying method`() {
+        #expect(Bit.multiplying(.zero, .one) == .zero)
+        #expect(Bit.multiplying(.one, .one) == .one)
+    }
+}
+
+// MARK: - Bit - Finite.Enumerable
+
+@Suite
+struct `Bit - Enumerable` {
+    @Test
+    func `count is 2`() {
+        #expect(Bit.count == 2)
+    }
+
+    @Test
+    func `ordinal values`() {
+        #expect(Bit.zero.ordinal == 0)
+        #expect(Bit.one.ordinal == 1)
+    }
+
+    @Test
+    func `init from ordinal unchecked`() {
+        #expect(Bit(__unchecked: (), ordinal: 0) == .zero)
+        #expect(Bit(__unchecked: (), ordinal: 1) == .one)
     }
 }
 
