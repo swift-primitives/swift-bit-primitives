@@ -20,9 +20,7 @@ let package = Package(
     dependencies: [
         .package(path: "../swift-algebra-primitives"),
         .package(path: "../swift-identity-primitives"),
-        .package(path: "../swift-index-primitives"),
-        .package(path: "../swift-array-primitives"),
-        .package(path: "../swift-set-primitives")
+        .package(path: "../swift-index-primitives")
     ],
     targets: [
         .target(
@@ -30,9 +28,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Algebra Primitives", package: "swift-algebra-primitives"),
                 .product(name: "Identity Primitives", package: "swift-identity-primitives"),
-                .product(name: "Index Primitives", package: "swift-index-primitives"),
-                .product(name: "Array Primitives", package: "swift-array-primitives"),
-                .product(name: "Set Primitives", package: "swift-set-primitives")
+                .product(name: "Index Primitives", package: "swift-index-primitives")
             ]
         ),
         .testTarget(
