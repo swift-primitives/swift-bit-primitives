@@ -1,7 +1,7 @@
 // Bit+Hash.Protocol.swift
 // Extends Bit to conform to Hash.Protocol.
 
-import Hash_Primitives
+public import Hash_Primitives
 
 // Bit already conforms to Swift.Hashable, so it has the required
 // == and hash(into:) methods. This conformance is trivial.
