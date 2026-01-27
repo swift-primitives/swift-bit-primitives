@@ -15,29 +15,34 @@ public import Index_Primitives
 extension Bit.Index {
     /// A bit's location within word-based storage.
     ///
-    /// When bits are packed into `UInt` words, `Location` provides the computed
-    /// word index, bit offset, and mask needed for read/write operations.
+    /// When bits are packed into fixed-width integer words, `Location` provides
+    /// the computed word index, bit offset, and mask needed for read/write operations.
+    ///
+    /// The type is generic over the word type, allowing use with any storage:
+    /// - `Location<UInt>` for standard word-sized storage
+    /// - `Location<UInt8>` for byte-packed storage
+    /// - `Location<UInt32>` for 32-bit word storage
     ///
     /// ## Usage
     ///
     /// ```swift
     /// let index: Bit.Index = 42
-    /// let loc = index.location(bitsPerWord: UInt.bitWidth)
+    /// let loc = Bit.Index.Location<UInt>(index: index, bitsPerWord: .bitsPerWord)
     /// let bit = (words[loc.word] & loc.mask) != 0
     /// ```
-    public struct Location: Sendable {
+    public struct Location<Word: FixedWidthInteger & UnsignedInteger & Sendable>: Sendable {
         /// The word index in the storage array.
-        public let word: Int
+        public let word: Index<Word>
 
-        /// The bit offset within the word (0..<bitsPerWord).
-        public let bit: Int
+        /// The bit offset within the word (0..<Word.bitWidth).
+        public let bit: Index<Bit>.Offset
 
         /// The bitmask for this bit position: `1 << bit`.
-        public let mask: UInt
+        public let mask: Word
 
         /// Creates a location from precomputed values.
         @inlinable
-        public init(word: Int, bit: Int, mask: UInt) {
+        public init(word: Index<Word>, bit: Index<Bit>.Offset, mask: Word) {
             self.word = word
             self.bit = bit
             self.mask = mask
@@ -45,23 +50,30 @@ extension Bit.Index {
 
         /// Creates a location from precomputed word and bit indices.
         @inlinable
-        public init(word: Int, bit: Int) {
+        public init(word: Index<Word>, bit: Index<Bit>.Offset) {
             self.word = word
             self.bit = bit
-            self.mask = 1 << bit
+            self.mask = Word(1) << bit.rawValue.rawValue
         }
 
         /// Creates a location from a typed bit index.
         ///
         /// - Parameters:
         ///   - index: The bit index to locate.
-        ///   - bitsPerWord: The number of bits per storage word (typically `UInt.bitWidth`).
+        ///   - bitsPerWord: The ratio of bits per word for the storage type.
         @inlinable
-        public init(index: Bit.Index, bitsPerWord: Int) {
+        public init(
+            index: Bit.Index,
+            bitsPerWord: Affine.Discrete.Ratio<Word, Bit>
+        ) {
             let i = Int(index.position.rawValue)
-            self.word = i / bitsPerWord
-            self.bit = i % bitsPerWord
-            self.mask = 1 << self.bit
+            let factor = bitsPerWord.factor
+
+            self.word = Index<Word>(__unchecked: (), Ordinal.Position(UInt(i / factor)))
+
+            let bitOffset = i % factor
+            self.bit = Index<Bit>.Offset(Affine.Discrete.Vector(bitOffset))
+            self.mask = Word(1) << bitOffset
         }
 
         /// Creates a location from a typed bit count.
@@ -71,23 +83,32 @@ extension Bit.Index {
         ///
         /// - Parameters:
         ///   - count: The bit count (used as position).
-        ///   - bitsPerWord: The number of bits per storage word (typically `UInt.bitWidth`).
+        ///   - bitsPerWord: The ratio of bits per word for the storage type.
         @inlinable
-        public init(count: Bit.Index.Count, bitsPerWord: Int) {
+        public init(
+            count: Bit.Index.Count,
+            bitsPerWord: Affine.Discrete.Ratio<Word, Bit>
+        ) {
             let i = Int(count.count.rawValue)
-            self.word = i / bitsPerWord
-            self.bit = i % bitsPerWord
-            self.mask = 1 << self.bit
+            let factor = bitsPerWord.factor
+
+            self.word = Index<Word>(__unchecked: (), Ordinal.Position(UInt(i / factor)))
+
+            let bitOffset = i % factor
+            self.bit = Index<Bit>.Offset(Affine.Discrete.Vector(bitOffset))
+            self.mask = Word(1) << bitOffset
         }
     }
 
     /// Computes the location of this bit index within word-based storage.
     ///
-    /// - Parameter bitsPerWord: The number of bits per storage word (typically `UInt.bitWidth`).
+    /// - Parameter bitsPerWord: The ratio of bits per word for the storage type.
     /// - Returns: The word index, bit offset, and mask for this bit position.
     @inlinable
-    public func location(bitsPerWord: Int) -> Location {
-        Location(index: self, bitsPerWord: bitsPerWord)
+    public func location<Word: FixedWidthInteger & UnsignedInteger & Sendable>(
+        bitsPerWord: Affine.Discrete.Ratio<Word, Bit>
+    ) -> Location<Word> {
+        Location<Word>(index: self, bitsPerWord: bitsPerWord)
     }
 
     /// Creates a bit index from a byte index (first bit of that byte).
@@ -114,11 +135,11 @@ extension Bit.Index {
     ///   - byteIndex: The byte index.
     ///   - bitOffset: The bit offset within the byte (0..<8).
     @inlinable
-    public init(_ byteIndex: Index_Primitives.Index<UInt8>, bitOffset: Int) {
+    public init(_ byteIndex: Index_Primitives.Index<UInt8>, bitOffset: Index<Bit>.Offset) {
         // Scale byte offset to bit offset, then add bit offset within byte
         let byteAsOffset = Index<UInt8>.Offset(Affine.Discrete.Vector(Int(byteIndex.position.rawValue)))
         let baseBitOffset = byteAsOffset * .bitsPerByte
-        let totalBitOffset = baseBitOffset.rawValue.rawValue + bitOffset
+        let totalBitOffset = baseBitOffset.rawValue.rawValue + bitOffset.rawValue.rawValue
         self.init(__unchecked: (), Ordinal.Position(UInt(totalBitOffset)))
     }
 
@@ -131,38 +152,52 @@ extension Bit.Index {
     ///
     /// ```swift
     /// let count: Bit.Index.Count = 100
-    /// let storage = Bit.Index.Storage(count: count, bitsPerWord: UInt.bitWidth)
+    /// let storage = Bit.Index.Storage<UInt>(count: count, bitsPerWord: .bitsPerWord)
     /// let words = ContiguousArray<UInt>(repeating: 0, count: storage.wordCount)
     /// ```
-    public struct Storage: Sendable {
+    public struct Storage<Word: FixedWidthInteger & UnsignedInteger & Sendable>: Sendable {
         /// The number of words needed to store the bits.
-        public let wordCount: Int
+        public let wordCount: Index<Word>.Count
 
-        /// The number of unused bits in the last word (0..<bitsPerWord).
-        public let unusedBits: Int
+        /// The number of unused bits in the last word (0..<Word.bitWidth).
+        public let unusedBits: Index<Bit>.Count
 
         /// Creates storage requirements from a bit count.
         ///
         /// - Parameters:
         ///   - count: The number of bits to store.
-        ///   - bitsPerWord: The number of bits per storage word (typically `UInt.bitWidth`).
+        ///   - bitsPerWord: The ratio of bits per word for the storage type.
         @inlinable
-        public init(count: Bit.Index.Count, bitsPerWord: Int) {
+        public init(
+            count: Bit.Index.Count,
+            bitsPerWord: Affine.Discrete.Ratio<Word, Bit>
+        ) {
             let c = Int(count.count.rawValue)
-            self.wordCount = (c + bitsPerWord - 1) / bitsPerWord
-            self.unusedBits = wordCount * bitsPerWord - c
+            let factor = bitsPerWord.factor
+            let words = (c + factor - 1) / factor
+            let unused = words * factor - c
+
+            self.wordCount = Index<Word>.Count(Cardinal.Count(UInt(words)))
+            self.unusedBits = Index<Bit>.Count(Cardinal.Count(UInt(unused)))
         }
 
         /// Creates storage requirements from a capacity.
         ///
         /// - Parameters:
         ///   - capacity: The bit capacity.
-        ///   - bitsPerWord: The number of bits per storage word (typically `UInt.bitWidth`).
+        ///   - bitsPerWord: The ratio of bits per word for the storage type.
         @inlinable
-        public init(capacity: Bit.Index.Count, bitsPerWord: Int) {
+        public init(
+            capacity: Bit.Index.Count,
+            bitsPerWord: Affine.Discrete.Ratio<Word, Bit>
+        ) {
             let c = Int(capacity.count.rawValue)
-            self.wordCount = (c + bitsPerWord - 1) / bitsPerWord
-            self.unusedBits = wordCount * bitsPerWord - c
+            let factor = bitsPerWord.factor
+            let words = (c + factor - 1) / factor
+            let unused = words * factor - c
+
+            self.wordCount = Index<Word>.Count(Cardinal.Count(UInt(words)))
+            self.unusedBits = Index<Bit>.Count(Cardinal.Count(UInt(unused)))
         }
     }
 }

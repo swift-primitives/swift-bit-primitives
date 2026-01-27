@@ -11,22 +11,50 @@
 
 public import Affine_Primitives
 
-// MARK: - Bit/Byte Conversion Ratio
+// MARK: - Generic Bit Width Ratio
+
+extension Affine.Discrete.Ratio where To == Bit, From: FixedWidthInteger {
+    /// The number of bits in the `From` type.
+    ///
+    /// This generic constant provides the correct ratio for any fixed-width integer:
+    /// - `Ratio<UInt, Bit>.bitWidth` → 64 (on 64-bit platforms)
+    /// - `Ratio<UInt8, Bit>.bitWidth` → 8
+    /// - `Ratio<UInt32, Bit>.bitWidth` → 32
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// let offset = Index<UInt32>.Offset(3)
+    /// let bitOffset = offset * .bitWidth  // Index<Bit>.Offset(96)
+    /// ```
+    @inlinable
+    public static var bitWidth: Self { .init(From.bitWidth) }
+}
+
+// MARK: - Semantic Aliases
 
 extension Affine.Discrete.Ratio where From == UInt8, To == Bit {
     /// The number of bits per byte (8).
-    ///
-    /// This is the canonical ratio for converting between byte and bit domains.
     ///
     /// ## Example
     ///
     /// ```swift
     /// let byteOffset = Index<UInt8>.Offset(2)
     /// let bitOffset = byteOffset * .bitsPerByte  // Index<Bit>.Offset(16)
-    ///
-    /// let byteCount = Index<UInt8>.Count(Cardinal.Count(10))
-    /// let bitCount = byteCount * .bitsPerByte  // Index<Bit>.Count(80)
     /// ```
     @inlinable
-    public static var bitsPerByte: Self { Self(8) }
+    public static var bitsPerByte: Self { .bitWidth }
+}
+
+extension Affine.Discrete.Ratio where From == UInt, To == Bit {
+    /// The number of bits per machine word (64 on 64-bit platforms).
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// let wordOffset = Index<UInt>.Offset(2)
+    /// let bitOffset = wordOffset * .bitsPerWord  // Index<Bit>.Offset(128)
+    /// ```
+    @inlinable
+    public static var bitsPerWord: Self { .bitWidth }
 }
