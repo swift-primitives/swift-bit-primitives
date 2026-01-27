@@ -28,5 +28,5 @@ extension Affine.Discrete.Ratio where From == UInt8, To == Bit {
     /// let bitCount = byteCount * .bitsPerByte  // Index<Bit>.Count(80)
     /// ```
     @inlinable
-    public static var bitsPerByte: Self { Self.init(8) }
+    public static var bitsPerByte: Self { Self(8) }
 }
