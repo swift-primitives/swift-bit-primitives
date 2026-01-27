@@ -9,6 +9,7 @@
 //
 // ===----------------------------------------------------------------------===//
 
+public import Affine_Primitives
 public import Index_Primitives
 
 extension Bit.Index {
@@ -57,7 +58,7 @@ extension Bit.Index {
         ///   - bitsPerWord: The number of bits per storage word (typically `UInt.bitWidth`).
         @inlinable
         public init(index: Bit.Index, bitsPerWord: Int) {
-            let i = index.position.rawValue
+            let i = Int(index.position.rawValue)
             self.word = i / bitsPerWord
             self.bit = i % bitsPerWord
             self.mask = 1 << self.bit
@@ -73,7 +74,7 @@ extension Bit.Index {
         ///   - bitsPerWord: The number of bits per storage word (typically `UInt.bitWidth`).
         @inlinable
         public init(count: Bit.Index.Count, bitsPerWord: Int) {
-            let i = count.rawValue
+            let i = Int(count.count.rawValue)
             self.word = i / bitsPerWord
             self.bit = i % bitsPerWord
             self.mask = 1 << self.bit
@@ -94,20 +95,31 @@ extension Bit.Index {
     /// Converts a byte-aligned position to the corresponding bit position.
     /// Byte 0 → Bit 0, Byte 1 → Bit 8, etc.
     ///
+    /// This uses the affine decomposition: convert position to offset from
+    /// origin, scale, then translate back. This is mathematically correct
+    /// because positions cannot be scaled directly in affine geometry.
+    ///
     /// - Parameter index: The byte index to convert.
     @inlinable
-    public init(_ index: Index_Primitives.Index<UInt8>) {
-        self.init(__unchecked: (), position: index.position.rawValue * 8)
+    public init(_ byteIndex: Index_Primitives.Index<UInt8>) {
+        // Affine decomposition: position as offset from origin, scale, translate back
+        let byteOffset = Index<UInt8>.Offset(Affine.Discrete.Vector(Int(byteIndex.position.rawValue)))
+        let bitOffset = byteOffset * .bitsPerByte
+        self.init(__unchecked: (), Ordinal.Position(UInt(bitOffset.rawValue.rawValue)))
     }
 
     /// Creates a bit index from a byte index and bit offset within that byte.
     ///
     /// - Parameters:
-    ///   - index: The byte index.
+    ///   - byteIndex: The byte index.
     ///   - bitOffset: The bit offset within the byte (0..<8).
     @inlinable
-    public init(_ index: Index_Primitives.Index<UInt8>, bitOffset: Int) {
-        self.init(__unchecked: (), position: index.position.rawValue * 8 + bitOffset)
+    public init(_ byteIndex: Index_Primitives.Index<UInt8>, bitOffset: Int) {
+        // Scale byte offset to bit offset, then add bit offset within byte
+        let byteAsOffset = Index<UInt8>.Offset(Affine.Discrete.Vector(Int(byteIndex.position.rawValue)))
+        let baseBitOffset = byteAsOffset * .bitsPerByte
+        let totalBitOffset = baseBitOffset.rawValue.rawValue + bitOffset
+        self.init(__unchecked: (), Ordinal.Position(UInt(totalBitOffset)))
     }
 
     /// Storage requirements for a bit count in word-based storage.
@@ -136,7 +148,7 @@ extension Bit.Index {
         ///   - bitsPerWord: The number of bits per storage word (typically `UInt.bitWidth`).
         @inlinable
         public init(count: Bit.Index.Count, bitsPerWord: Int) {
-            let c = count.rawValue
+            let c = Int(count.count.rawValue)
             self.wordCount = (c + bitsPerWord - 1) / bitsPerWord
             self.unusedBits = wordCount * bitsPerWord - c
         }
@@ -148,7 +160,7 @@ extension Bit.Index {
         ///   - bitsPerWord: The number of bits per storage word (typically `UInt.bitWidth`).
         @inlinable
         public init(capacity: Bit.Index.Count, bitsPerWord: Int) {
-            let c = capacity.rawValue
+            let c = Int(capacity.count.rawValue)
             self.wordCount = (c + bitsPerWord - 1) / bitsPerWord
             self.unusedBits = wordCount * bitsPerWord - c
         }
