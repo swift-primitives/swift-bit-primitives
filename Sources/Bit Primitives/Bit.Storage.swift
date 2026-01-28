@@ -37,13 +37,13 @@ extension Bit {
             count: Bit.Index.Count,
             bitsPerWord: Affine.Discrete.Ratio<Word, Bit>
         ) {
-            let c = Int(count.count.rawValue)
+            let c = Int(count.count)
             let factor = bitsPerWord.factor
             let words = (c + factor - 1) / factor
             let unused = words * factor - c
 
-            self.wordCount = Index_Primitives.Index<Word>.Count(Cardinal.Count(UInt(words)))
-            self.unusedBits = Index_Primitives.Index<Bit>.Count(Cardinal.Count(UInt(unused)))
+            self.wordCount = Index_Primitives.Index<Word>.Count(Cardinal(UInt(words)))
+            self.unusedBits = Index_Primitives.Index<Bit>.Count(Cardinal(UInt(unused)))
         }
 
         /// Creates storage requirements from a capacity.
@@ -56,13 +56,13 @@ extension Bit {
             capacity: Bit.Index.Count,
             bitsPerWord: Affine.Discrete.Ratio<Word, Bit>
         ) {
-            let c = Int(capacity.count.rawValue)
+            let c = Int(capacity.count)
             let factor = bitsPerWord.factor
             let words = (c + factor - 1) / factor
             let unused = words * factor - c
 
-            self.wordCount = Index_Primitives.Index<Word>.Count(Cardinal.Count(UInt(words)))
-            self.unusedBits = Bit.Index.Count(Cardinal.Count(UInt(unused)))
+            self.wordCount = Index_Primitives.Index<Word>.Count(Cardinal(UInt(words)))
+            self.unusedBits = Bit.Index.Count(Cardinal(UInt(unused)))
         }
     }
 }

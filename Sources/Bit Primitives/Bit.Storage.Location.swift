@@ -73,10 +73,10 @@ extension Bit.Storage {
             index: Bit.Index,
             bitsPerWord: Affine.Discrete.Ratio<Word, Bit>
         ) {
-            let i = Int(index.position.rawValue)
+            let i = Int(index.position)
             let factor = bitsPerWord.factor
             
-            self.word = Index<Word>(__unchecked: (), Ordinal.Position(UInt(i / factor)))
+            self.word = Index<Word>(__unchecked: (), Ordinal(UInt(i / factor)))
             
             let bitOffset = i % factor
             self.bit = Index<Bit>.Offset(Affine.Discrete.Vector(bitOffset))
@@ -96,10 +96,10 @@ extension Bit.Storage {
             count: Bit.Index.Count,
             bitsPerWord: Affine.Discrete.Ratio<Word, Bit>
         ) {
-            let i = Int(count.count.rawValue)
+            let i = Int(count.count)
             let factor = bitsPerWord.factor
             
-            self.word = Index<Word>(__unchecked: (), Ordinal.Position(UInt(i / factor)))
+            self.word = Index<Word>(__unchecked: (), Ordinal(UInt(i / factor)))
             
             let bitOffset = i % factor
             self.bit = Index<Bit>.Offset(Affine.Discrete.Vector(bitOffset))
@@ -137,9 +137,9 @@ extension Bit.Index {
     @inlinable
     public init(_ byteIndex: Index_Primitives.Index<UInt8>) {
         // Affine decomposition: position as offset from origin, scale, translate back
-        let byteOffset = Index<UInt8>.Offset(Affine.Discrete.Vector(Int(byteIndex.position.rawValue)))
+        let byteOffset = Index<UInt8>.Offset(Affine.Discrete.Vector(Int(byteIndex.position)))
         let bitOffset = byteOffset * .bitsPerByte
-        self.init(__unchecked: (), Ordinal.Position(UInt(bitOffset.rawValue.rawValue)))
+        self.init(__unchecked: (), Ordinal(UInt(bitOffset.rawValue.rawValue)))
     }
 
     /// Creates a bit index from a byte index and bit offset within that byte.
@@ -153,9 +153,9 @@ extension Bit.Index {
         bitOffset: Index<Bit>.Offset
     ) {
         // Scale byte offset to bit offset, then add bit offset within byte
-        let byteAsOffset = Index<UInt8>.Offset(Affine.Discrete.Vector(Int(byteIndex.position.rawValue)))
+        let byteAsOffset = Index<UInt8>.Offset(Affine.Discrete.Vector(Int(byteIndex.position)))
         let baseBitOffset = byteAsOffset * .bitsPerByte
         let totalBitOffset = baseBitOffset.rawValue.rawValue + bitOffset.rawValue.rawValue
-        self.init(__unchecked: (), Ordinal.Position(UInt(totalBitOffset)))
+        self.init(__unchecked: (), Ordinal(UInt(totalBitOffset)))
     }
 }
