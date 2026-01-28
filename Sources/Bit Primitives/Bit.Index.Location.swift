@@ -42,7 +42,11 @@ extension Bit.Index {
 
         /// Creates a location from precomputed values.
         @inlinable
-        public init(word: Index<Word>, bit: Index<Bit>.Offset, mask: Word) {
+        public init(
+            word: Index<Word>,
+            bit: Index<Bit>.Offset,
+            mask: Word
+        ) {
             self.word = word
             self.bit = bit
             self.mask = mask
@@ -50,7 +54,10 @@ extension Bit.Index {
 
         /// Creates a location from precomputed word and bit indices.
         @inlinable
-        public init(word: Index<Word>, bit: Index<Bit>.Offset) {
+        public init(
+            word: Index<Word>,
+            bit: Index<Bit>.Offset
+        ) {
             self.word = word
             self.bit = bit
             self.mask = Word(1) << bit.rawValue.rawValue
