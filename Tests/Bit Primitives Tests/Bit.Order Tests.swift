@@ -3,6 +3,7 @@
 import Testing
 
 @testable import Bit_Primitives
+import Bit_Primitives_Test_Support
 
 // MARK: - Test Suite Declaration
 
@@ -19,68 +20,68 @@ extension Bit.Order {
 // MARK: - Unit Tests
 
 extension Bit.Order.Test.Unit {
-    @Test("msb and lsb cases exist")
-    func msbAndLsbCases() {
+    @Test
+    func `msb and lsb cases exist`() {
         let msb: Bit.Order = .msb
         let lsb: Bit.Order = .lsb
         #expect(msb != lsb)
     }
 
-    @Test("opposite operation - instance property")
-    func oppositeProperty() {
+    @Test
+    func `opposite operation - instance property`() {
         #expect(Bit.Order.msb.opposite == .lsb)
         #expect(Bit.Order.lsb.opposite == .msb)
     }
 
-    @Test("opposite operation - static function")
-    func oppositeStatic() {
+    @Test
+    func `opposite operation - static function`() {
         #expect(Bit.Order.opposite(.msb) == .lsb)
         #expect(Bit.Order.opposite(.lsb) == .msb)
     }
 
-    @Test("prefix NOT operator")
-    func prefixNotOperator() {
+    @Test
+    func `prefix NOT operator`() {
         #expect(!Bit.Order.msb == .lsb)
         #expect(!Bit.Order.lsb == .msb)
     }
 
-    @Test("most significant bit first alias")
-    func msbAlias() {
+    @Test
+    func `most significant bit first alias`() {
         #expect(Bit.Order.`most significant bit first` == .msb)
     }
 
-    @Test("least significant bit first alias")
-    func lsbAlias() {
+    @Test
+    func `least significant bit first alias`() {
         #expect(Bit.Order.`least significant bit first` == .lsb)
     }
 
-    @Test("Finite.Enumerable count is 2")
-    func enumerableCount() {
+    @Test
+    func `Finite.Enumerable count is 2`() {
         #expect(Bit.Order.count == 2)
     }
 
-    @Test("Finite.Enumerable ordinal values")
-    func enumerableOrdinal() {
+    @Test
+    func `Finite.Enumerable ordinal values`() {
         #expect(Bit.Order.msb.ordinal == 0)
         #expect(Bit.Order.lsb.ordinal == 1)
     }
 
-    @Test("Finite.Enumerable init from ordinal unchecked")
-    func enumerableInitFromOrdinal() {
+    @Test
+    func `Finite.Enumerable init from ordinal unchecked`() {
         #expect(Bit.Order(__unchecked: (), ordinal: 0) == .msb)
         #expect(Bit.Order(__unchecked: (), ordinal: 1) == .lsb)
     }
 
-    @Test("allCases iteration")
-    func allCases() {
+    @Test
+    func `allCases iteration`() {
         let allCases = Array(Bit.Order.allCases)
         #expect(allCases.count == 2)
         #expect(allCases[0] == .msb)
         #expect(allCases[1] == .lsb)
     }
 
-    @Test("Hashable conformance")
-    func hashable() {
+    @Test
+    func `Hashable conformance`() {
         var set = Set<Bit.Order>()
         set.insert(.msb)
         set.insert(.lsb)
@@ -89,8 +90,8 @@ extension Bit.Order.Test.Unit {
         #expect(set.count == 2)
     }
 
-    @Test("Equatable conformance")
-    func equatable() {
+    @Test
+    func `Equatable conformance`() {
         #expect(Bit.Order.msb == Bit.Order.msb)
         #expect(Bit.Order.lsb == Bit.Order.lsb)
         #expect(Bit.Order.msb != Bit.Order.lsb)

@@ -15,7 +15,11 @@ let package = Package(
         .library(
             name: "Bit Primitives",
             targets: ["Bit Primitives"]
-        )
+        ),
+        .library(
+            name: "Bit Primitives Test Support",
+            targets: ["Bit Primitives Test Support"]
+        ),
     ],
     dependencies: [
         .package(path: "../swift-algebra-primitives"),
@@ -33,9 +37,21 @@ let package = Package(
                 .product(name: "Index Primitives", package: "swift-index-primitives"),
             ]
         ),
+        .target(
+            name: "Bit Primitives Test Support",
+            dependencies: [
+                "Bit Primitives",
+                .product(name: "Index Primitives Test Support", package: "swift-index-primitives"),
+            ],
+            path: "Tests/Support"
+        ),
         .testTarget(
             name: "Bit Primitives Tests",
-            dependencies: ["Bit Primitives"]
+            dependencies: [
+                "Bit Primitives",
+                "Bit Primitives Test Support",
+            ],
+            path: "Tests/Bit Primitives Tests"
         )
     ],
     swiftLanguageModes: [.v6]

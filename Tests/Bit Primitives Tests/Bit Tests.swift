@@ -3,6 +3,7 @@
 import Testing
 
 @testable import Bit_Primitives
+import Bit_Primitives_Test_Support
 
 // MARK: - Test Suite Declaration
 
@@ -19,249 +20,249 @@ extension Bit {
 // MARK: - Unit Tests
 
 extension Bit.Test.Unit {
-    @Test("memory layout is exactly 1 byte")
-    func memoryLayout() {
+    @Test
+    func `memory layout is exactly 1 byte`() {
         #expect(MemoryLayout<Bit>.size == 1)
         #expect(MemoryLayout<Bit>.stride == 1)
     }
 
-    @Test("zero and one constants")
-    func zeroAndOneConstants() {
+    @Test
+    func `zero and one constants`() {
         #expect(Bit.zero == 0)
         #expect(Bit.one == 1)
     }
 
-    @Test("flipped operation")
-    func flippedOperation() {
+    @Test
+    func `flipped operation`() {
         #expect(Bit.zero.flipped == .one)
         #expect(Bit.one.flipped == .zero)
     }
 
-    @Test("toggled is alias for flipped")
-    func toggledAlias() {
+    @Test
+    func `toggled is alias for flipped`() {
         #expect(Bit.zero.toggled == Bit.zero.flipped)
         #expect(Bit.one.toggled == Bit.one.flipped)
     }
 
-    @Test("prefix NOT operator")
-    func prefixNotOperator() {
+    @Test
+    func `prefix NOT operator`() {
         #expect(!Bit.zero == .one)
         #expect(!Bit.one == .zero)
     }
 
-    @Test("bitwise NOT operator")
-    func bitwiseNotOperator() {
+    @Test
+    func `bitwise NOT operator`() {
         #expect(~Bit.zero == .one)
         #expect(~Bit.one == .zero)
     }
 
-    @Test("AND operation - static method")
-    func andOperationStatic() {
+    @Test
+    func `AND operation - static method`() {
         #expect(Bit.and(.zero, .zero) == .zero)
         #expect(Bit.and(.zero, .one) == .zero)
         #expect(Bit.and(.one, .zero) == .zero)
         #expect(Bit.and(.one, .one) == .one)
     }
 
-    @Test("AND operation - instance method")
-    func andOperationInstance() {
+    @Test
+    func `AND operation - instance method`() {
         #expect(Bit.zero.and(.zero) == .zero)
         #expect(Bit.zero.and(.one) == .zero)
         #expect(Bit.one.and(.zero) == .zero)
         #expect(Bit.one.and(.one) == .one)
     }
 
-    @Test("AND operation - operator")
-    func andOperationOperator() {
+    @Test
+    func `AND operation - operator`() {
         #expect((Bit.zero & .zero) == .zero)
         #expect((Bit.zero & .one) == .zero)
         #expect((Bit.one & .zero) == .zero)
         #expect((Bit.one & .one) == .one)
     }
 
-    @Test("OR operation - static method")
-    func orOperationStatic() {
+    @Test
+    func `OR operation - static method`() {
         #expect(Bit.or(.zero, .zero) == .zero)
         #expect(Bit.or(.zero, .one) == .one)
         #expect(Bit.or(.one, .zero) == .one)
         #expect(Bit.or(.one, .one) == .one)
     }
 
-    @Test("OR operation - instance method")
-    func orOperationInstance() {
+    @Test
+    func `OR operation - instance method`() {
         #expect(Bit.zero.or(.zero) == .zero)
         #expect(Bit.zero.or(.one) == .one)
         #expect(Bit.one.or(.zero) == .one)
         #expect(Bit.one.or(.one) == .one)
     }
 
-    @Test("OR operation - operator")
-    func orOperationOperator() {
+    @Test
+    func `OR operation - operator`() {
         #expect((Bit.zero | .zero) == .zero)
         #expect((Bit.zero | .one) == .one)
         #expect((Bit.one | .zero) == .one)
         #expect((Bit.one | .one) == .one)
     }
 
-    @Test("XOR operation - static method")
-    func xorOperationStatic() {
+    @Test
+    func `XOR operation - static method`() {
         #expect(Bit.xor(.zero, .zero) == .zero)
         #expect(Bit.xor(.zero, .one) == .one)
         #expect(Bit.xor(.one, .zero) == .one)
         #expect(Bit.xor(.one, .one) == .zero)
     }
 
-    @Test("XOR operation - instance method")
-    func xorOperationInstance() {
+    @Test
+    func `XOR operation - instance method`() {
         #expect(Bit.zero.xor(.zero) == .zero)
         #expect(Bit.zero.xor(.one) == .one)
         #expect(Bit.one.xor(.zero) == .one)
         #expect(Bit.one.xor(.one) == .zero)
     }
 
-    @Test("XOR operation - operator")
-    func xorOperationOperator() {
+    @Test
+    func `XOR operation - operator`() {
         #expect((Bit.zero ^ .zero) == .zero)
         #expect((Bit.zero ^ .one) == .one)
         #expect((Bit.one ^ .zero) == .one)
         #expect((Bit.one ^ .one) == .zero)
     }
 
-    @Test("XOR with UInt8 operator")
-    func xorWithUInt8() {
+    @Test
+    func `XOR with UInt8 operator`() {
         #expect((Bit.zero ^ UInt8(0)) == .zero)
         #expect((Bit.zero ^ UInt8(1)) == .one)
         #expect((Bit.one ^ UInt8(0)) == .one)
         #expect((Bit.one ^ UInt8(1)) == .zero)
     }
 
-    @Test("init from Bool")
-    func initFromBool() {
+    @Test
+    func `init from Bool`() {
         #expect(Bit(true) == .one)
         #expect(Bit(false) == .zero)
     }
 
-    @Test("boolValue property")
-    func boolValueProperty() {
+    @Test
+    func `boolValue property`() {
         #expect(Bit.one.boolValue == true)
         #expect(Bit.zero.boolValue == false)
     }
 
-    @Test("ExpressibleByBooleanLiteral")
-    func expressibleByBooleanLiteral() {
+    @Test
+    func `ExpressibleByBooleanLiteral`() {
         let one: Bit = true
         let zero: Bit = false
         #expect(one == .one)
         #expect(zero == .zero)
     }
 
-    @Test("ExpressibleByIntegerLiteral")
-    func expressibleByIntegerLiteral() {
+    @Test
+    func `ExpressibleByIntegerLiteral`() {
         let one: Bit = 1
         let zero: Bit = 0
         #expect(one == .one)
         #expect(zero == .zero)
     }
 
-    @Test("allCases contains zero and one")
-    func allCases() {
+    @Test
+    func `allCases contains zero and one`() {
         #expect(Bit.allCases.count == 2)
         #expect(Bit.allCases.contains(.zero))
         #expect(Bit.allCases.contains(.one))
     }
 
-    @Test("normalizing init coerces nonzero to one")
-    func normalizingInit() {
+    @Test
+    func `normalizing init coerces nonzero to one`() {
         #expect(Bit(normalizing: 0) == .zero)
         #expect(Bit(normalizing: 1) == .one)
         #expect(Bit(normalizing: 2) == .one)
         #expect(Bit(normalizing: 255) == .one)
     }
 
-    @Test("failable init from UInt8 - valid values")
-    func failableInitValid() {
+    @Test
+    func `failable init from UInt8 - valid values`() {
         #expect(Bit(UInt8(0)) == .zero)
         #expect(Bit(UInt8(1)) == .one)
     }
 
-    @Test("Z₂ field identity values")
-    func z2FieldIdentity() {
+    @Test
+    func `Z2 field identity values`() {
         #expect(Bit.identity.additive == .zero)
         #expect(Bit.identity.multiplicative == .one)
     }
 
-    @Test("Z₂ field inverse is self")
-    func z2FieldInverse() {
+    @Test
+    func `Z2 field inverse is self`() {
         #expect(Bit.zero.inverse == .zero)
         #expect(Bit.one.inverse == .one)
     }
 
-    @Test("Z₂ field addition is XOR")
-    func z2FieldAddition() {
+    @Test
+    func `Z2 field addition is XOR`() {
         #expect(Bit.zero.adding(.zero) == .zero)
         #expect(Bit.zero.adding(.one) == .one)
         #expect(Bit.one.adding(.zero) == .one)
         #expect(Bit.one.adding(.one) == .zero)
     }
 
-    @Test("Z₂ field addition - static method")
-    func z2FieldAdditionStatic() {
+    @Test
+    func `Z2 field addition - static method`() {
         #expect(Bit.adding(.zero, .zero) == .zero)
         #expect(Bit.adding(.one, .one) == .zero)
     }
 
-    @Test("Z₂ field multiplication is AND")
-    func z2FieldMultiplication() {
+    @Test
+    func `Z2 field multiplication is AND`() {
         #expect(Bit.zero.multiplying(.zero) == .zero)
         #expect(Bit.zero.multiplying(.one) == .zero)
         #expect(Bit.one.multiplying(.zero) == .zero)
         #expect(Bit.one.multiplying(.one) == .one)
     }
 
-    @Test("Z₂ field multiplication - static method")
-    func z2FieldMultiplicationStatic() {
+    @Test
+    func `Z2 field multiplication - static method`() {
         #expect(Bit.multiplying(.zero, .one) == .zero)
         #expect(Bit.multiplying(.one, .one) == .one)
     }
 
-    @Test("Finite.Enumerable count is 2")
-    func enumerableCount() {
+    @Test
+    func `Finite.Enumerable count is 2`() {
         #expect(Bit.count == 2)
     }
 
-    @Test("Finite.Enumerable ordinal values")
-    func enumerableOrdinal() {
+    @Test
+    func `Finite.Enumerable ordinal values`() {
         #expect(Bit.zero.ordinal == 0)
         #expect(Bit.one.ordinal == 1)
     }
 
-    @Test("Finite.Enumerable init from ordinal unchecked")
-    func enumerableInitFromOrdinal() {
+    @Test
+    func `Finite.Enumerable init from ordinal unchecked`() {
         #expect(Bit(__unchecked: (), ordinal: 0) == .zero)
         #expect(Bit(__unchecked: (), ordinal: 1) == .one)
     }
 
-    @Test("Comparable ordering")
-    func comparableOrdering() {
+    @Test
+    func `Comparable ordering`() {
         #expect(Bit.zero < Bit.one)
         #expect(!(Bit.one < Bit.zero))
         #expect(!(Bit.zero < Bit.zero))
     }
 
-    @Test("CustomStringConvertible description")
-    func description() {
+    @Test
+    func `CustomStringConvertible description`() {
         #expect(Bit.zero.description == "0")
         #expect(Bit.one.description == "1")
     }
 
-    @Test("static flipped function")
-    func staticFlipped() {
+    @Test
+    func `static flipped function`() {
         #expect(Bit.flipped(.zero) == .one)
         #expect(Bit.flipped(.one) == .zero)
     }
 
-    @Test("static toggled function")
-    func staticToggled() {
+    @Test
+    func `static toggled function`() {
         #expect(Bit.toggled(.zero) == .one)
         #expect(Bit.toggled(.one) == .zero)
     }
@@ -270,8 +271,8 @@ extension Bit.Test.Unit {
 // MARK: - Edge Case Tests
 
 extension Bit.Test.EdgeCase {
-    @Test("failable init returns nil for invalid values")
-    func failableInitInvalid() {
+    @Test
+    func `failable init returns nil for invalid values`() {
         #expect(Bit(UInt8(2)) == nil)
         #expect(Bit(UInt8(255)) == nil)
         #expect(Bit(UInt8(128)) == nil)
@@ -281,8 +282,8 @@ extension Bit.Test.EdgeCase {
 // MARK: - Performance Tests
 
 extension Bit.Test.Performance {
-    @Test("boolean operation throughput")
-    func booleanOperationThroughput() {
+    @Test
+    func `boolean operation throughput`() {
         // Warmup
         for _ in 0..<100 {
             var result: Bit = .zero
