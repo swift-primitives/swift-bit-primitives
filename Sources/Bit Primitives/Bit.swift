@@ -297,19 +297,19 @@ extension Bit {
 extension Bit: Finite.Enumerable {
     /// Number of bit values.
     @inlinable
-    public static var count: Int { 2 }
+    public static var count: Cardinal { Cardinal(2) }
 
     /// Ordinal of this value (0: zero, 1: one).
     @inlinable
-    public var ordinal: Int { Int(rawValue) }
+    public var ordinal: Ordinal { Ordinal(UInt(rawValue)) }
 
     /// Creates a value from its ordinal without bounds checking.
     ///
     /// - Parameter __unchecked: Marker parameter indicating unchecked access.
     /// - Parameter ordinal: Must be 0 (zero) or 1 (one).
     @inlinable
-    public init(__unchecked: Void, ordinal: Int) {
-        self = Self(rawValue: UInt8(truncatingIfNeeded: ordinal))!
+    public init(__unchecked: Void, ordinal: Ordinal) {
+        self = Self(rawValue: UInt8(truncatingIfNeeded: ordinal.rawValue))!
     }
 }
 
