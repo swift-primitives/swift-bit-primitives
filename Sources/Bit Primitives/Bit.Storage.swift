@@ -37,7 +37,7 @@ extension Bit {
             count: Bit.Index.Count,
             bitsPerWord: Affine.Discrete.Ratio<Word, Bit>
         ) {
-            let c = Int(count.count)
+            let c = Int(bitPattern: count.count)
             let factor = bitsPerWord.factor
             let words = (c + factor - 1) / factor
             let unused = words * factor - c
@@ -56,7 +56,7 @@ extension Bit {
             capacity: Bit.Index.Count,
             bitsPerWord: Affine.Discrete.Ratio<Word, Bit>
         ) {
-            let c = Int(capacity.count)
+            let c = Int(bitPattern: capacity.count)
             let factor = bitsPerWord.factor
             let words = (c + factor - 1) / factor
             let unused = words * factor - c
