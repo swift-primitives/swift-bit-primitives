@@ -33,12 +33,12 @@ let package = Package(
                 "Bit Primitives Core",
                 "Bit Primitives Standard Library Integration",
                 .product(name: "Hash Primitives", package: "swift-hash-primitives"),
+                .product(name: "Algebra Primitives", package: "swift-algebra-primitives"),
             ]
         ),
         .target(
             name: "Bit Primitives Core",
             dependencies: [
-                .product(name: "Algebra Primitives", package: "swift-algebra-primitives"),
                 .product(name: "Identity Primitives", package: "swift-identity-primitives"),
             ]
         ),

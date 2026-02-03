@@ -45,13 +45,6 @@ public enum Bit: UInt8, Sendable, Hashable, Equatable {
     case one = 1
 }
 
-// MARK: - CaseIterable
-
-extension Bit: CaseIterable {
-    /// All bit values: `[.zero, .one]`.
-    public static let allCases: [Bit] = [.zero, .one]
-}
-
 // MARK: - Inverse
 
 extension Bit {
@@ -78,17 +71,6 @@ extension Bit {
     @inlinable
     public init(normalizing value: UInt8) {
         self = value == 0 ? .zero : .one
-    }
-}
-
-// MARK: - CustomStringConvertible
-
-extension Bit: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .zero: "0"
-        case .one: "1"
-        }
     }
 }
 
@@ -242,10 +224,6 @@ extension Bit {
         public static var multiplicative: Bit { .one }
     }
 }
-
-
-
-// MARK: - Codable
 
 #if !hasFeature(Embedded)
 extension Bit: Codable {}

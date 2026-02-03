@@ -3,5 +3,4 @@
 
 import Comparison_Primitives
 
-extension Bit/*: Comparison.`Protocol`*/ {
-}
+extension Bit: Comparison.`Protocol` {}

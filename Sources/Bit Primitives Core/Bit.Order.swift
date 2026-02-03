@@ -1,9 +1,6 @@
 // Bit.Order.swift
 // Bit significance order within a byte.
 
-public import Algebra_Primitives
-public import Identity_Primitives
-
 /// Bit significance order within a byte.
 ///
 /// Defines which bit is considered "first" when processing bits within a byte
@@ -72,49 +69,6 @@ extension Bit.Order {
         opposite(value)
     }
 }
-
-// MARK: - Finite.Enumerable
-
-extension Bit.Order: Finite.Enumerable {
-    /// Number of bit order values.
-    @inlinable
-    public static var count: Cardinal { 2 }
-
-    /// Ordinal of this value (0: msb, 1: lsb).
-    @inlinable
-    public var ordinal: Ordinal {
-        switch self {
-        case .msb: 0
-        case .lsb: 1
-        }
-    }
-
-    /// Creates a value from its ordinal without bounds checking.
-    ///
-    /// - Parameter __unchecked: Marker parameter indicating unchecked access.
-    /// - Parameter ordinal: Must be 0 (msb) or 1 (lsb).
-    @inlinable
-    public init(__unchecked: Void, ordinal: Ordinal) {
-        self = [.msb, .lsb][ordinal]
-    }
-}
-
-// MARK: - Tagged Value
-
-extension Bit.Order {
-    /// A value tagged with its bit order.
-    ///
-    /// Use this to explicitly track bit order alongside data.
-    ///
-    /// ## Example
-    ///
-    /// ```swift
-    /// let bitstream: Bit.Order.Value<[UInt8]> = .init(.msb, data)
-    /// ```
-    public typealias Value<Payload> = Tagged<Bit.Order, Payload>
-}
-
-// MARK: - Codable
 
 #if !hasFeature(Embedded)
 extension Bit.Order: Codable {}

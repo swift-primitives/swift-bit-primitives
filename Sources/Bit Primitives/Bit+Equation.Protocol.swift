@@ -3,5 +3,4 @@
 
 import Equation_Primitives
 
-extension Bit/*: Equation.`Protocol`*/ {
-}
+extension Bit: Equation.`Protocol` {}
