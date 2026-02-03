@@ -38,9 +38,7 @@ let package = Package(
         ),
         .target(
             name: "Bit Primitives Core",
-            dependencies: [
-                .product(name: "Identity Primitives", package: "swift-identity-primitives"),
-            ]
+            dependencies: []
         ),
         .target(
             name: "Bit Primitives Standard Library Integration",
