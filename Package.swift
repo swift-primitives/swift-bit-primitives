@@ -31,6 +31,8 @@ let package = Package(
             name: "Bit Primitives",
             dependencies: [
                 "Bit Primitives Core",
+                "Bit Boolean Primitives",
+                "Bit Field Primitives",
                 "Bit Primitives Standard Library Integration",
                 .product(name: "Hash Primitives", package: "swift-hash-primitives"),
                 .product(name: "Algebra Primitives", package: "swift-algebra-primitives"),
@@ -41,9 +43,21 @@ let package = Package(
             dependencies: []
         ),
         .target(
-            name: "Bit Primitives Standard Library Integration",
+            name: "Bit Boolean Primitives",
             dependencies: [
                 "Bit Primitives Core",
+            ]
+        ),
+        .target(
+            name: "Bit Field Primitives",
+            dependencies: [
+                "Bit Boolean Primitives",
+            ]
+        ),
+        .target(
+            name: "Bit Primitives Standard Library Integration",
+            dependencies: [
+                "Bit Boolean Primitives",
             ]
         ),
         .target(
