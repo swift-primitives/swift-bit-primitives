@@ -30,9 +30,22 @@ let package = Package(
         .target(
             name: "Bit Primitives",
             dependencies: [
-                .product(name: "Algebra Primitives", package: "swift-algebra-primitives"),
+                "Bit Primitives Core",
+                "Bit Primitives Standard Library Integration",
                 .product(name: "Hash Primitives", package: "swift-hash-primitives"),
+            ]
+        ),
+        .target(
+            name: "Bit Primitives Core",
+            dependencies: [
+                .product(name: "Algebra Primitives", package: "swift-algebra-primitives"),
                 .product(name: "Identity Primitives", package: "swift-identity-primitives"),
+            ]
+        ),
+        .target(
+            name: "Bit Primitives Standard Library Integration",
+            dependencies: [
+                "Bit Primitives Core",
             ]
         ),
         .target(
@@ -50,7 +63,7 @@ let package = Package(
                 "Bit Primitives Test Support",
             ],
             path: "Tests/Bit Primitives Tests"
-        )
+        ),
     ],
     swiftLanguageModes: [.v6]
 )

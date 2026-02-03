@@ -8,8 +8,6 @@
 // - Array<Bit>.Packed: 1 bit per element
 // - Set<Bit>.Packed: 1 bit per element
 
-public import Algebra_Primitives
-
 /// Binary digit: zero or one.
 ///
 /// The fundamental unit of information in digital systems. Forms the Z₂ field
@@ -47,6 +45,21 @@ public enum Bit: UInt8, Sendable, Hashable, Equatable {
     case one = 1
 }
 
+// MARK: - CaseIterable
+
+extension Bit: CaseIterable {
+    /// All bit values: `[.zero, .one]`.
+    public static let allCases: [Bit] = [.zero, .one]
+}
+
+// MARK: - Inverse
+
+extension Bit {
+    /// Additive inverse (self, since a + a = 0 in Z₂).
+    @inlinable
+    public var inverse: Bit { self }
+}
+
 // MARK: - Initializers
 
 extension Bit {
@@ -68,68 +81,14 @@ extension Bit {
     }
 }
 
-// MARK: - CaseIterable
+// MARK: - CustomStringConvertible
 
-extension Bit: CaseIterable {
-    /// All bit values: `[.zero, .one]`.
-    public static let allCases: [Bit] = [.zero, .one]
-}
-
-// MARK: - Comparable
-
-extension Bit: Comparable {
-    @inlinable
-    public static func < (lhs: Bit, rhs: Bit) -> Bool {
-        lhs.rawValue < rhs.rawValue
-    }
-}
-
-// MARK: - ExpressibleByBooleanLiteral
-
-extension Bit: ExpressibleByBooleanLiteral {
-    /// Creates a bit from a boolean literal.
-    ///
-    /// ```swift
-    /// let a: Bit = true   // .one
-    /// let b: Bit = false  // .zero
-    /// ```
-    @inlinable
-    public init(booleanLiteral value: Bool) {
-        self = value ? .one : .zero
-    }
-}
-
-// MARK: - ExpressibleByIntegerLiteral
-
-extension Bit: ExpressibleByIntegerLiteral {
-    /// Creates a bit from an integer literal.
-    ///
-    /// ```swift
-    /// let a: Bit = 1  // .one
-    /// let b: Bit = 0  // .zero
-    /// ```
-    ///
-    /// - Precondition: Value must be 0 or 1.
-    @inlinable
-    public init(integerLiteral value: UInt8) {
-        precondition(value <= 1, "Bit literal must be 0 or 1")
-        self = value == 0 ? .zero : .one
-    }
-}
-
-// MARK: - Boolean Conversion
-
-extension Bit {
-    /// Creates a bit from a boolean (`true` → `.one`, `false` → `.zero`).
-    @inlinable
-    public init(_ bool: Bool) {
-        self = bool ? .one : .zero
-    }
-
-    /// Boolean representation (`true` if `.one`, `false` if `.zero`).
-    @inlinable
-    public var boolValue: Bool {
-        self == .one
+extension Bit: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .zero: "0"
+        case .one: "1"
+        }
     }
 }
 
@@ -284,52 +243,7 @@ extension Bit {
     }
 }
 
-// MARK: - Inverse
 
-extension Bit {
-    /// Additive inverse (self, since a + a = 0 in Z₂).
-    @inlinable
-    public var inverse: Bit { self }
-}
-
-// MARK: - Finite.Enumerable
-
-extension Bit: Finite.Enumerable {
-    /// Number of bit values.
-    @inlinable
-    public static var count: Cardinal { Cardinal(2) }
-
-    /// Ordinal of this value (0: zero, 1: one).
-    @inlinable
-    public var ordinal: Ordinal { Ordinal(UInt(rawValue)) }
-
-    /// Creates a value from its ordinal without bounds checking.
-    ///
-    /// - Parameter __unchecked: Marker parameter indicating unchecked access.
-    /// - Parameter ordinal: Must be 0 (zero) or 1 (one).
-    @inlinable
-    public init(__unchecked: Void, ordinal: Ordinal) {
-        self = Self(rawValue: UInt8(truncatingIfNeeded: ordinal.rawValue))!
-    }
-}
-
-// MARK: - CustomStringConvertible
-
-extension Bit: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .zero: "0"
-        case .one: "1"
-        }
-    }
-}
-
-// MARK: - Tagged Value
-
-extension Bit {
-    /// A value paired with a bit flag.
-    public typealias Value<Payload> = Pair<Bit, Payload>
-}
 
 // MARK: - Codable
 
