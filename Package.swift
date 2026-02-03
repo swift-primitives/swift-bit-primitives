@@ -25,7 +25,6 @@ let package = Package(
         .package(path: "../swift-algebra-primitives"),
         .package(path: "../swift-hash-primitives"),
         .package(path: "../swift-identity-primitives"),
-        .package(path: "../swift-index-primitives"),
     ],
     targets: [
         .target(
@@ -34,14 +33,13 @@ let package = Package(
                 .product(name: "Algebra Primitives", package: "swift-algebra-primitives"),
                 .product(name: "Hash Primitives", package: "swift-hash-primitives"),
                 .product(name: "Identity Primitives", package: "swift-identity-primitives"),
-                .product(name: "Index Primitives", package: "swift-index-primitives"),
             ]
         ),
         .target(
             name: "Bit Primitives Test Support",
             dependencies: [
                 "Bit Primitives",
-                .product(name: "Index Primitives Test Support", package: "swift-index-primitives"),
+                .product(name: "Identity Primitives Test Support", package: "swift-identity-primitives"),
             ],
             path: "Tests/Support"
         ),
