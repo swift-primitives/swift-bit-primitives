@@ -10,31 +10,17 @@
 
 /// Binary digit: zero or one.
 ///
-/// The fundamental unit of information in digital systems. Forms the Z₂ field
-/// under XOR (addition) and AND (multiplication). Use `Bit` when working with
-/// individual binary digits, flags, or boolean algebra.
-///
-/// ## Example
+/// The fundamental unit of information. Forms the two-element Boolean algebra
+/// ⟨{0, 1}, ∧, ∨, ¬, 0, 1⟩ and the Z₂ field ⟨{0, 1}, +, ×⟩ where
+/// addition is XOR and multiplication is AND.
 ///
 /// ```swift
 /// let a: Bit = .one
 /// let b: Bit = .zero
-/// print(a.flipped)       // Bit.zero
-/// print(a.xor(b))        // Bit.one
-/// print(Bit(true))       // Bit.one
-/// ```
-///
-/// ## Arrays
-///
-/// Use `[Bit]` for simple unpacked arrays, or `Array<Bit>.Packed` for
-/// space-efficient packed storage (8x compression).
-///
-/// ```swift
-/// // Unpacked: 1 byte per bit
-/// var simple: [Bit] = [true, false, true]
-///
-/// // Packed: 1 bit per bit (in swift-array-primitives)
-/// var packed = Array<Bit>.Packed(simple)
+/// a ^ b          // .one   (Z₂ addition)
+/// a & b          // .zero  (Z₂ multiplication)
+/// ~a             // .zero  (complement)
+/// a.adding(b)    // .one   (field addition)
 /// ```
 @frozen
 public enum Bit: UInt8, Sendable, Hashable, Equatable {
@@ -43,6 +29,14 @@ public enum Bit: UInt8, Sendable, Hashable, Equatable {
 
     /// Binary one (true, on, high).
     case one = 1
+    
+    /// Creates a bit from an arbitrary UInt8.
+    ///
+    /// Returns `nil` if the value is not 0 or 1.
+    @inlinable
+    public init?(_ value: UInt8) {
+        self.init(rawValue: value)
+    }
 }
 
 // MARK: - Inverse
@@ -53,26 +47,6 @@ extension Bit {
     public var inverse: Bit { self }
 }
 
-// MARK: - Initializers
-
-extension Bit {
-    /// Creates a bit from an arbitrary UInt8.
-    ///
-    /// Returns `nil` if the value is not 0 or 1.
-    @inlinable
-    public init?(_ value: UInt8) {
-        self.init(rawValue: value)
-    }
-
-    /// Normalizing init - any nonzero becomes `.one`.
-    ///
-    /// Use for bulk extraction from packed words where the value
-    /// is known to be a single masked bit (0 or nonzero).
-    @inlinable
-    public init(normalizing value: UInt8) {
-        self = value == 0 ? .zero : .one
-    }
-}
 
 // MARK: - Bitwise Operators
 
@@ -81,12 +55,6 @@ extension Bit {
     @inlinable
     public static func ^ (lhs: Bit, rhs: Bit) -> Bit {
         Bit(rawValue: lhs.rawValue ^ rhs.rawValue)!
-    }
-
-    /// XOR with integer (for `bit ^ 1` idiom).
-    @inlinable
-    public static func ^ (lhs: Bit, rhs: UInt8) -> Bit {
-        Bit(normalizing: lhs.rawValue ^ (rhs & 1))
     }
 
     /// AND (multiplication in Z₂).
@@ -224,7 +192,3 @@ extension Bit {
         public static var multiplicative: Bit { .one }
     }
 }
-
-#if !hasFeature(Embedded)
-extension Bit: Codable {}
-#endif

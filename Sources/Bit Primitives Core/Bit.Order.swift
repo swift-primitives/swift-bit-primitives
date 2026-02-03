@@ -16,7 +16,7 @@
 /// // LSB first: process bits 0→1→2→3→4→5→6→7
 /// ```
 extension Bit {
-    public enum Order: Sendable, Hashable, CaseIterable {
+    public enum Order: Sendable, Hashable {
         /// Most significant bit first (bit 7 → bit 0).
         ///
         /// Common in network protocols and human-readable binary representations.
@@ -69,7 +69,3 @@ extension Bit.Order {
         opposite(value)
     }
 }
-
-#if !hasFeature(Embedded)
-extension Bit.Order: Codable {}
-#endif
