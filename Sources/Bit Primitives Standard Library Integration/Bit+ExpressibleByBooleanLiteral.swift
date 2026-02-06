@@ -13,12 +13,6 @@ extension Bit {
     public init(_ bool: Bool) {
         self = bool ? .one : .zero
     }
-
-    /// Boolean representation (`true` if `.one`, `false` if `.zero`).
-    @inlinable
-    public var boolValue: Bool {
-        self == .one
-    }
 }
 
 // MARK: - ExpressibleByBooleanLiteral
@@ -33,5 +27,13 @@ extension Bit: ExpressibleByBooleanLiteral {
     @inlinable
     public init(booleanLiteral value: Bool) {
         self = value ? .one : .zero
+    }
+}
+
+extension Bool {
+    public init(
+        _ bit: Bit
+    ){
+        self = bit == .one
     }
 }

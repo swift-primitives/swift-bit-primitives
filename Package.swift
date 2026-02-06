@@ -22,8 +22,8 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../swift-algebra-aggregate-primitives"),
         .package(path: "../swift-algebra-field-primitives"),
+        .package(path: "../swift-finite-primitives"),
         .package(path: "../swift-hash-primitives"),
         .package(path: "../swift-identity-primitives"),
     ],
@@ -36,7 +36,7 @@ let package = Package(
                 "Bit Field Primitives",
                 "Bit Primitives Standard Library Integration",
                 .product(name: "Hash Primitives", package: "swift-hash-primitives"),
-                .product(name: "Algebra Aggregate Primitives", package: "swift-algebra-aggregate-primitives"),
+                .product(name: "Finite Primitives", package: "swift-finite-primitives"),
             ]
         ),
         .target(

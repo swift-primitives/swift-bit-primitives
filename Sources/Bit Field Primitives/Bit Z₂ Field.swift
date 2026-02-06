@@ -30,26 +30,3 @@ extension Bit {
         Bit.multiplying(self, other)
     }
 }
-
-// MARK: - Additive Inverse
-
-extension Bit {
-    /// Additive inverse (self, since a + a = 0 in Z₂).
-    @inlinable
-    public var inverse: Bit { self }
-}
-
-// MARK: - Algebraic Identities
-
-extension Bit {
-    /// Algebraic identity elements for Z₂ field operations.
-    public enum identity {
-        /// Additive identity: 0 + x = x.
-        @inlinable
-        public static var additive: Bit { .zero }
-
-        /// Multiplicative identity: 1 × x = x.
-        @inlinable
-        public static var multiplicative: Bit { .one }
-    }
-}

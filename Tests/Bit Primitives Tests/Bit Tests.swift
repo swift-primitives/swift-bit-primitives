@@ -143,9 +143,9 @@ extension Bit.Test.Unit {
     }
 
     @Test
-    func `boolValue property`() {
-        #expect(Bit.one.boolValue == true)
-        #expect(Bit.zero.boolValue == false)
+    func `Bool init from Bit`() {
+        #expect(Bool(Bit.one) == true)
+        #expect(Bool(Bit.zero) == false)
     }
 
     @Test
@@ -187,14 +187,16 @@ extension Bit.Test.Unit {
 
     @Test
     func `Z2 field identity values`() {
-        #expect(Bit.identity.additive == .zero)
-        #expect(Bit.identity.multiplicative == .one)
+        let z2 = Algebra.Field<Bit>.z2
+        #expect(z2.zero == .zero)
+        #expect(z2.one == .one)
     }
 
     @Test
     func `Z2 field inverse is self`() {
-        #expect(Bit.zero.inverse == .zero)
-        #expect(Bit.one.inverse == .one)
+        let z2 = Algebra.Field<Bit>.z2
+        #expect(z2.additive.inverting(.zero) == .zero)
+        #expect(z2.additive.inverting(.one) == .one)
     }
 
     @Test
