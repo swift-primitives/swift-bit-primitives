@@ -23,6 +23,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../swift-algebra-field-primitives"),
+        .package(path: "../swift-cardinal-primitives"),
         .package(path: "../swift-finite-primitives"),
         .package(path: "../swift-hash-primitives"),
         .package(path: "../swift-identity-primitives"),
@@ -60,6 +61,7 @@ let package = Package(
             name: "Bit Primitives Standard Library Integration",
             dependencies: [
                 "Bit Boolean Primitives",
+                .product(name: "Cardinal Primitives", package: "swift-cardinal-primitives"),
             ]
         ),
         .target(
