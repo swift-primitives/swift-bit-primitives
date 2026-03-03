@@ -9,11 +9,6 @@ applies_to: [swift-bit-primitives]
 normative: false
 ---
 -->
-
-@Metadata {
-    @TitleHeading("Bit Primitives")
-}
-
 Design decisions, implementation patterns, and lessons learned specific to this package.
 
 ## Overview
@@ -67,9 +62,7 @@ Every `Int` had a more precise type waiting to replace it. The typed versions ar
 
 ---
 
-## Topics
+## Related
 
-### Related Documents
-
-- <doc:Bit-Location>
-- <doc:Bit-Storage>
+- Bit-Location
+- Bit-Storage
