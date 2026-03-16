@@ -1,4 +1,11 @@
 # Cross-Package Namespace Extension Patterns in Swift Primitives: An Architectural Analysis of Bit-Level Abstractions
+<!--
+---
+version: 1.0.0
+last_updated: 2026-01-21
+status: RECOMMENDATION
+---
+-->
 
 **A Comprehensive Study of the Array/Set/Bit-Primitives Relationship and Its Implications for Binary-Primitives Design**
 
