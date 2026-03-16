@@ -2,9 +2,9 @@
 
 <!--
 ---
-version: 2.0.0
-last_updated: 2026-02-03
-status: IN_PROGRESS
+version: 2.0.1
+last_updated: 2026-03-15
+status: DEFERRED
 tier: 3
 applies_to: [swift-bit-primitives, swift-bit-storage-primitives]
 ---
@@ -1266,3 +1266,11 @@ extension Bit.Index.Count {
 *Document created: 2026-02-03*
 *Revised: 2026-02-03 (v2.0.0 — expanded scope to include word-level kernels)*
 *Analysis scope: 2 packages, 11 source files, 6 external language/ISA comparisons, 16 Boolean functions, 23 references*
+
+### Deferral
+
+**Date**: 2026-03-15
+
+**Reason**: The document reached RECOMMENDATION status with a complete addition set (4 single-bit operations, 6 word-level kernels) and an architectural restructuring plan (retire bit-storage-primitives, split into enhanced bit-primitives + bit-vector-primitives). Implementation has not started. The completeness findings were validated by the leaf package audit (Phase 2c included bit-primitives), which confirmed the same gaps. No new information has emerged to change the recommendations.
+
+**Resume when**: Implementation capacity is available for the Part A (single-bit operations) and Part B (word-level kernels) additions, and/or when the bit-storage-primitives retirement is prioritized.
