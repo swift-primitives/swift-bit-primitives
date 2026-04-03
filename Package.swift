@@ -17,6 +17,22 @@ let package = Package(
             targets: ["Bit Primitives"]
         ),
         .library(
+            name: "Bit Primitives Core",
+            targets: ["Bit Primitives Core"]
+        ),
+        .library(
+            name: "Bit Boolean Primitives",
+            targets: ["Bit Boolean Primitives"]
+        ),
+        .library(
+            name: "Bit Field Primitives",
+            targets: ["Bit Field Primitives"]
+        ),
+        .library(
+            name: "Bit Primitives Standard Library Integration",
+            targets: ["Bit Primitives Standard Library Integration"]
+        ),
+        .library(
             name: "Bit Primitives Test Support",
             targets: ["Bit Primitives Test Support"]
         ),
