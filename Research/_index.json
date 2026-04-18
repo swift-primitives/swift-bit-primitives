@@ -1,0 +1,32 @@
+{
+  "$schema": "https://swift-institute.org/schemas/research-index-v1.json",
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-04-18",
+  "title": "Research Index",
+  "blurb": "",
+  "scope": "swift-bit-primitives (swift-primitives)",
+  "documents": [
+    {
+      "file": "Bit Primitives Extension Patterns Analysis.md",
+      "displayName": "Bit Primitives Extension Patterns Analysis.md",
+      "topic": "Bit primitives extension patterns analysis",
+      "date": "2026-01-21",
+      "status": "ANALYSIS",
+      "statusDetail": null,
+      "statusRaw": "ANALYSIS",
+      "tier": null,
+      "scope": null
+    },
+    {
+      "file": "bit-primitives-completeness-analysis.md",
+      "displayName": "bit-primitives-completeness-analysis.md",
+      "topic": "Tier 3: Completeness analysis of Bit type operations",
+      "date": "2026-02-03",
+      "status": "RECOMMENDATION",
+      "statusDetail": null,
+      "statusRaw": "RECOMMENDATION",
+      "tier": 3,
+      "scope": null
+    }
+  ]
+}
