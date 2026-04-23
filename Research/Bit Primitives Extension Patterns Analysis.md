@@ -61,7 +61,7 @@ The `swift-bit-primitives` package occupies Tier 3 (Binary and Numeric) in the n
 | Dependency | Purpose |
 |------------|---------|
 | `swift-algebra-primitives` | `Pair<First, Second>`, `Finite.Enumerable` protocol |
-| `swift-identity-primitives` | `Tagged<Tag, RawValue>` phantom-typed wrapper |
+| `swift-tagged-primitives` | `Tagged<Tag, RawValue>` phantom-typed wrapper |
 | `swift-index-primitives` | `Index<Element>` type-safe position abstraction |
 
 ### 2.2 Type Definitions

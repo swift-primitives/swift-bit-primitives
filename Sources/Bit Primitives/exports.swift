@@ -3,7 +3,7 @@
 
 @_exported public import Finite_Primitives
 @_exported public import Hash_Primitives
-@_exported public import Identity_Primitives
+@_exported public import Tagged_Primitives
 @_exported public import Bit_Primitives_Core
 @_exported public import Bit_Boolean_Primitives
 @_exported public import Bit_Field_Primitives

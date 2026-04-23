@@ -5,7 +5,7 @@
 //  Created by Coen ten Thije Boonkkamp on 03/02/2026.
 //
 
-import Identity_Primitives
+import Tagged_Primitives
 
 // MARK: - Tagged Value
 

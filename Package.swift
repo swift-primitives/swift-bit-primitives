@@ -42,7 +42,7 @@ let package = Package(
         .package(path: "../swift-cardinal-primitives"),
         .package(path: "../swift-finite-primitives"),
         .package(path: "../swift-hash-primitives"),
-        .package(path: "../swift-identity-primitives"),
+        .package(path: "../swift-tagged-primitives"),
     ],
     targets: [
         .target(
@@ -84,7 +84,7 @@ let package = Package(
             name: "Bit Primitives Test Support",
             dependencies: [
                 "Bit Primitives",
-                .product(name: "Identity Primitives Test Support", package: "swift-identity-primitives"),
+                .product(name: "Tagged Primitives Test Support", package: "swift-tagged-primitives"),
             ],
             path: "Tests/Support"
         ),
