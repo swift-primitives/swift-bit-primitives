@@ -9,6 +9,7 @@
 //
 // ===----------------------------------------------------------------------===//
 
+public import Carrier_Primitives
 public import Cardinal_Primitives
 
 // MARK: - Cardinal Shift Operators
@@ -17,7 +18,7 @@ public import Cardinal_Primitives
 @inlinable
 public func << <RawValue: FixedWidthInteger>(
     lhs: RawValue,
-    rhs: some Cardinal.`Protocol`
+    rhs: some Carrier<Cardinal>
 ) -> RawValue {
     let shift = Int(bitPattern: rhs.cardinal)
     precondition(shift >= 0 && shift < RawValue.bitWidth, "Shift amount out of range")
@@ -28,7 +29,7 @@ public func << <RawValue: FixedWidthInteger>(
 @inlinable
 public func >> <RawValue: FixedWidthInteger>(
     lhs: RawValue,
-    rhs: some Cardinal.`Protocol`
+    rhs: some Carrier<Cardinal>
 ) -> RawValue {
     let shift = Int(bitPattern: rhs.cardinal)
     precondition(shift >= 0 && shift < RawValue.bitWidth, "Shift amount out of range")
@@ -39,7 +40,7 @@ public func >> <RawValue: FixedWidthInteger>(
 @inlinable
 public func <<= <RawValue: FixedWidthInteger>(
     lhs: inout RawValue,
-    rhs: some Cardinal.`Protocol`
+    rhs: some Carrier<Cardinal>
 ) {
     lhs = lhs << rhs
 }
@@ -48,7 +49,7 @@ public func <<= <RawValue: FixedWidthInteger>(
 @inlinable
 public func >>= <RawValue: FixedWidthInteger>(
     lhs: inout RawValue,
-    rhs: some Cardinal.`Protocol`
+    rhs: some Carrier<Cardinal>
 ) {
     lhs = lhs >> rhs
 }
